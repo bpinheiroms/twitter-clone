@@ -14,12 +14,8 @@
     "next": "12.1.5",
     "react": "18.0.0",
     "react-dom": "18.0.0",
-    "firebase": "^9.4.1",
     "moment": "^2.29.1",
-    "next-auth": "4.0.0-beta.6",
-    "react-firebase-hooks": "^4.0.1",
     "react-moment": "^1.1.1",
-    "recoil": "^0.5.2",
     "yup": "^0.32.11",
     "tailwind-scrollbar-hide": "^1.1.5"
   },
