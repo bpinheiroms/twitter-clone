@@ -1,5 +1,6 @@
 import ListPosts from '../ListPosts';
 import PostInput from '../PostInput';
+import FilterContainer from '../FilterContainer';
 
 const Feed = () => {
   return (
@@ -8,6 +9,7 @@ const Feed = () => {
         <h2 className="text-lg sm:text-xl font-bold">Home</h2>
       </div>
       <PostInput />
+      <FilterContainer/>
       <ListPosts />
     </div>
   );

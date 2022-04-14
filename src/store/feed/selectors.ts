@@ -2,28 +2,45 @@ import moment from 'moment';
 import { selector } from 'recoil';
 import { userDataMock } from '../../data';
 import { IPostItem } from '../../interfaces';
+import { followingListState } from '../profile/atoms';
 import { feedListFilterState, feedListState } from './atoms';
 
 const _ = require('lodash');
 
-export const filteredTodoListState = selector({
-  key: 'filteredTodoListState',
+export const filteredFeedListState = selector({
+  key: 'filteredFeedListState',
   get: ({ get }) => {
     const filter = get(feedListFilterState);
     const list = get(feedListState);
+    const followingList = get(followingListState);
 
     const sorted = _.sortBy(list, function (o: IPostItem) {
       return new Date(o.date);
     }).reverse();
 
-    switch (filter) {
-      case 'all':
-        return sorted.filter((item: IPostItem) => item);
-      case 'following':
-        return sorted.filter((item: IPostItem) => item);
-      default:
-        return sorted;
+    if (filter) {
+      return sorted.filter((item: IPostItem) =>
+        _.includes(followingList, item.idUser),
+      );
     }
+
+    return sorted.filter((item: IPostItem) => item);
+  },
+});
+
+export const filteredMyPostListsState = selector({
+  key: 'filteredMyPostListsState',
+  get: ({ get }) => {
+    const list = get(feedListState);
+
+    const allPosts: IPostItem[] = _.filter(list, function (o: IPostItem) {
+      return (
+        o.idUser === userDataMock.idUser ||
+        o.idUserRePost === userDataMock.idUser
+      );
+    });
+
+    return allPosts;
   },
 });
 
