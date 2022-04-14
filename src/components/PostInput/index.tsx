@@ -1,8 +1,9 @@
 import { ChangeEvent, useState } from 'react';
-import { useSetRecoilState } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { generateTweetData } from '../../helper/tweet';
 import { IPostItem } from '../../interfaces';
-import { feedListState } from '../../store/feed';
+import { feedListState } from '../../store/feed/atoms';
+import { exceedLimitPostsState } from '../../store/feed/selectors';
 
 const PostInput = () => {
   const [postMessage, setPostMessage] = useState('');
@@ -11,6 +12,7 @@ const PostInput = () => {
     useState(totalCharacters);
 
   const setTodoList = useSetRecoilState(feedListState);
+  const exceedLimitPosts = useRecoilValue(exceedLimitPostsState);
 
   const onChangeValue = (e: ChangeEvent<HTMLTextAreaElement>) => {
     const value = e.target.value;
@@ -43,16 +45,23 @@ const PostInput = () => {
 
         <div className="flex items-center justify-between pt-2.5">
           <div className="flex items-center">
-            <span
-              className={`text-slate-400 text-[11px] ${
-                charactersAvailable === 0 ? 'text-red-300' : 'text-green-300'
-              }`}>
-              {charactersAvailable} characters available
-            </span>
+            {exceedLimitPosts ? (
+              <span className="text-[11px] text-red-300">
+                You have exceeded the limit of 5 daily posts. Come back
+                tomorrow!
+              </span>
+            ) : (
+              <span
+                className={` text-[11px] ${
+                  charactersAvailable === 0 ? 'text-red-300' : 'text-green-300'
+                }`}>
+                {charactersAvailable} characters available
+              </span>
+            )}
           </div>
           <button
             onClick={onSubmit}
-            disabled={postMessage === ''}
+            disabled={postMessage === '' || exceedLimitPosts}
             className="bg-blue-500 text-white rounded-full px-4 py-1.5 font-bold shadow-md hover:bg-blue-700 disabled:hover:bg-blue-300 disabled:opacity-50 disabled:cursor-default">
             Tweet
           </button>

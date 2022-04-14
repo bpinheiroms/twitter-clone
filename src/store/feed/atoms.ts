@@ -1,7 +1,7 @@
 import { atom } from 'recoil';
 import { recoilPersist } from 'recoil-persist';
 import { feedListMock } from '../../data';
-import {  IPostItem } from '../../interfaces';
+import { IPostFilter, IPostItem } from '../../interfaces';
 
 const localStorage =
   typeof window !== `undefined` ? window.localStorage : undefined;
@@ -15,4 +15,9 @@ export const feedListState = atom<IPostItem[]>({
   key: 'feedListState',
   default: feedListMock,
   effects_UNSTABLE: [persistAtom],
+});
+
+export const feedListFilterState = atom<IPostFilter>({
+  key: 'feedListFilterState',
+  default: 'all',
 });

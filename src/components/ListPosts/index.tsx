@@ -1,10 +1,10 @@
 import { useRecoilValue } from 'recoil';
 import { IPostItem } from '../../interfaces';
-import { feedListState } from '../../store/feed';
+import { filteredTodoListState } from '../../store/feed/selectors';
 import Post from '../PostItem';
 
 const ListPosts = () => {
-  const todoList = useRecoilValue(feedListState);
+  const todoList = useRecoilValue(filteredTodoListState);
 
   return (
     <div>

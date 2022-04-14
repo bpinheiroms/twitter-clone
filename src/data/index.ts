@@ -1,6 +1,12 @@
 import { convertDateTimezone } from '../helper/date';
 import { IPostItem } from '../interfaces';
 
+const userDataMock = {
+  idUser: 1,
+  nameUser: 'Bruno',
+  username: 'bpinheiroms',
+};
+
 const feedListMock: IPostItem[] = [
   {
     id: 12345678,
@@ -40,4 +46,4 @@ const feedListMock: IPostItem[] = [
   },
 ];
 
-export { feedListMock };
+export { feedListMock, userDataMock };
