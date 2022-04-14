@@ -28,4 +28,22 @@ const generateRetweetData = (postItem: IPostItem): IPostItem => {
   return data;
 };
 
-export { generateTweetData, generateRetweetData };
+const generateQuotePostData = (
+  text: string,
+  quotePostItem: IPostItem,
+): IPostItem => {
+  const data: IPostItem = {
+    id: new Date().getTime(),
+    idUser: userDataMock.idUser,
+    nameUser: userDataMock.nameUser,
+    username: userDataMock.username,
+    text: text,
+    date: convertDateTimezone(new Date()),
+    type: 'quote-post',
+    quotePostData: quotePostItem,
+  };
+
+  return data;
+};
+
+export { generateTweetData, generateRetweetData, generateQuotePostData };

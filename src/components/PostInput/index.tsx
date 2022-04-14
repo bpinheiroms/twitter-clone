@@ -1,11 +1,17 @@
 import { ChangeEvent, useState } from 'react';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
-import { generateTweetData } from '../../helper/tweet';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+import { generateQuotePostData, generateTweetData } from '../../helper/tweet';
 import { IPostItem } from '../../interfaces';
 import { feedListState } from '../../store/feed/atoms';
 import { exceedLimitPostsState } from '../../store/feed/selectors';
+import { quoteModalState } from '../../store/modals/atoms';
+import PostData from '../PostData';
 
-const PostInput = () => {
+interface IProps {
+  isFromModal?: boolean;
+}
+
+const PostInput: React.FC<IProps> = ({ isFromModal }) => {
   const [postMessage, setPostMessage] = useState('');
   const [totalCharacters] = useState(777);
   const [charactersAvailable, setCharactersAvailable] =
@@ -13,6 +19,8 @@ const PostInput = () => {
 
   const setFeedList = useSetRecoilState(feedListState);
   const exceedLimitPosts = useRecoilValue(exceedLimitPostsState);
+
+  const [quoteModal, setQuoteModal] = useRecoilState(quoteModalState);
 
   const onChangeValue = (e: ChangeEvent<HTMLTextAreaElement>) => {
     const value = e.target.value;
@@ -23,6 +31,24 @@ const PostInput = () => {
 
   const onSubmit = () => {
     setPostMessage('');
+
+    if (isFromModal) {
+      const { post } = quoteModal;
+
+      if (post) {
+        setFeedList((oldList: IPostItem[]) => [
+          ...oldList,
+          generateQuotePostData(postMessage, post),
+        ]);
+
+        setQuoteModal({
+          opened: false,
+          post: undefined,
+        });
+      }
+
+      return;
+    }
 
     setFeedList((oldList: IPostItem[]) => [
       ...oldList,
@@ -42,6 +68,11 @@ const PostInput = () => {
             className="bg-transparent outline-none text-[#d9d9d9] text-lg placeholder-gray-500 tracking-wide w-full min-h-[50px]"
           />
         </div>
+        {isFromModal && quoteModal.post && (
+          <div className="ml-10 bg-neutral-900 p-3 rounded-lg mb-5 mt-5">
+            <PostData post={quoteModal.post} isQuotePostData />
+          </div>
+        )}
 
         <div className="flex items-center justify-between pt-2.5">
           <div className="flex items-center">
@@ -55,10 +86,11 @@ const PostInput = () => {
                 className={` text-[11px] ${
                   charactersAvailable === 0 ? 'text-red-300' : 'text-green-300'
                 }`}>
-                {charactersAvailable} characters available
+                {charactersAvailable} words available
               </span>
             )}
           </div>
+
           <button
             onClick={onSubmit}
             disabled={postMessage === '' || exceedLimitPosts}

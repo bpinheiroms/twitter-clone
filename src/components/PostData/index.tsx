@@ -39,7 +39,7 @@ const PostData: React.FC<IProps> = ({ post, children, isQuotePostData }) => {
             {post.text}
           </p>
           {!!post.quotePostData && (
-            <div className="ml-10 bg-neutral-900 p-3 rounded-lg">
+            <div className="ml-10 bg-neutral-900 p-3 rounded-lg mt-3">
               {children}
             </div>
           )}

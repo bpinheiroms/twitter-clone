@@ -14,4 +14,16 @@ export interface ICreateTweet {
   text: string;
 }
 
-export type IPostFilter = 'all' | 'following';
+export interface IUsers {
+  idUser: number;
+  nameUser: string;
+  username: string;
+  joined: string;
+  followers: number;
+  following: number;
+}
+
+export interface IQuoteModalParams {
+  opened: boolean;
+  post?: IPostItem;
+}
