@@ -29,6 +29,6 @@ export interface IQuoteModalParams {
 }
 
 export interface IFeedFilter {
-  isAll: boolean;
+  isFollowing: boolean;
   searchText: string;
 }
