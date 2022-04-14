@@ -31,8 +31,9 @@ export const filteredFeedListState = selector({
         `.*${filter.searchText.toLowerCase().split('').join('.*')}.*`,
       );
 
-      sorted = sorted.filter((lst: IPostItem) =>
-        lst.text.toLowerCase().match(expression),
+      sorted = sorted.filter(
+        (lst: IPostItem) =>
+          lst.text.toLowerCase().match(expression) && lst.type !== 'retweet',
       );
     }
 
