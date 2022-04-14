@@ -3,7 +3,7 @@ import { convertDateTimezone } from './date';
 
 const generateTweetData = (text: string): IPostItem => {
   const data: IPostItem = {
-    id: new Date().getMilliseconds(),
+    id: new Date().getTime(),
     idUser: 1,
     nameUser: 'Bruno',
     username: 'bpinheiroms',

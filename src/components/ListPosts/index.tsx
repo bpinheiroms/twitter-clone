@@ -1,28 +1,17 @@
-import { useEffect, useState } from 'react';
-import useGetFeedList from '../../hooks/useGetFeedList';
+import { useRecoilValue } from 'recoil';
 import { IPostItem } from '../../interfaces';
+import { feedListState } from '../../store/feed';
 import Post from '../PostItem';
-import SpinnerAnimated from '../SpinnerAnimated';
 
 const ListPosts = () => {
-  const { loading, data, fetchData } = useGetFeedList();
-
-  useEffect(() => {
-    fetchData();
-  }, []);
+  const todoList = useRecoilValue(feedListState);
 
   return (
-    <>
-      {loading ? (
-        <SpinnerAnimated />
-      ) : (
-        <>
-          {data?.map((post: IPostItem) => (
-            <Post key={post.id} post={post} />
-          ))}
-        </>
-      )}
-    </>
+    <div>
+      {todoList?.map((post: IPostItem) => (
+        <Post key={post.id} post={post} />
+      ))}
+    </div>
   );
 };
 

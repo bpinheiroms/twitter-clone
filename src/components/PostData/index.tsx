@@ -14,9 +14,9 @@ const PostData: React.FC<IProps> = ({ post, children, isQuotePostData }) => {
     : 'text-[11px] sm:text-[11x]';
 
   return (
-    <>
+    <div>
       {post && (
-        <>
+        <div>
           <div className="flex justify-between">
             <div className="text-slate-400">
               <div className="inline-block group">
@@ -43,9 +43,9 @@ const PostData: React.FC<IProps> = ({ post, children, isQuotePostData }) => {
               {children}
             </div>
           )}
-        </>
+        </div>
       )}
-    </>
+    </div>
   );
 };
 

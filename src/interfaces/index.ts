@@ -13,6 +13,4 @@ export interface ICreateTweet {
   text: string;
 }
 
-export enum StorageKeys {
-  FEED_LIST = 'feed-list'
-}
+export type IPostFilter = 'all' | 'following';

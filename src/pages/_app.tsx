@@ -1,8 +1,23 @@
-import '../styles/globals.css'
-import type { AppProps } from 'next/app'
+import '../styles/globals.css';
+import type { AppProps } from 'next/app';
+import { RecoilRoot } from 'recoil';
 
-function MyApp({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />
+function SafeHydrate({ children }: any) {
+  return (
+    <div suppressHydrationWarning>
+      {typeof window === 'undefined' ? null : children}
+    </div>
+  );
 }
 
-export default MyApp
+function MyApp({ Component, pageProps }: AppProps) {
+  return (
+    <SafeHydrate>
+      <RecoilRoot>
+        <Component {...pageProps} />
+      </RecoilRoot>
+    </SafeHydrate>
+  );
+}
+
+export default MyApp;

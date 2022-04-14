@@ -1,11 +1,16 @@
 import { ChangeEvent, useState } from 'react';
+import { useSetRecoilState } from 'recoil';
+import { generateTweetData } from '../../helper/tweet';
+import { IPostItem } from '../../interfaces';
+import { feedListState } from '../../store/feed';
 
 const PostInput = () => {
-  const [loading, setLoading] = useState(false);
   const [postMessage, setPostMessage] = useState('');
   const [totalCharacters] = useState(777);
   const [charactersAvailable, setCharactersAvailable] =
     useState(totalCharacters);
+
+  const setTodoList = useSetRecoilState(feedListState);
 
   const onChangeValue = (e: ChangeEvent<HTMLTextAreaElement>) => {
     const value = e.target.value;
@@ -14,11 +19,17 @@ const PostInput = () => {
     setPostMessage(value);
   };
 
+  const onSubmit = () => {
+    setPostMessage('');
+
+    setTodoList((oldList: IPostItem[]) => [
+      ...oldList,
+      generateTweetData(postMessage),
+    ]);
+  };
+
   return (
-    <div
-      className={`border-b border-gray-700 p-3 flex space-x-3 scrollbar-hide ${
-        loading && 'opacity-60'
-      }`}>
+    <div className="border-b border-gray-700 p-3 flex space-x-3 scrollbar-hide">
       <div className="divide-y divide-gray-700 w-full">
         <div className="space-y-2.5">
           <textarea
@@ -39,7 +50,10 @@ const PostInput = () => {
               {charactersAvailable} characters available
             </span>
           </div>
-          <button className="bg-blue-500 text-white rounded-full px-4 py-1.5 font-bold shadow-md hover:bg-blue-700 disabled:hover:bg-blue-300 disabled:opacity-50 disabled:cursor-default">
+          <button
+            onClick={onSubmit}
+            disabled={postMessage === ''}
+            className="bg-blue-500 text-white rounded-full px-4 py-1.5 font-bold shadow-md hover:bg-blue-700 disabled:hover:bg-blue-300 disabled:opacity-50 disabled:cursor-default">
             Tweet
           </button>
         </div>
