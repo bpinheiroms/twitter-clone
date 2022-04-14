@@ -25,7 +25,7 @@ const SearchInput = () => {
             type="text"
             onChange={onChange}
             className="bg-transparent placeholder-gray-500 outline-none text-[#d9d9d9] absolute inset-0 pl-11 border border-transparent w-full focus:border-[#1d9bf0] rounded-full focus:bg-black focus:shadow-lg"
-            placeholder="Search Twitter"
+            placeholder="Search Posts"
           />
         </div>
       </div>
