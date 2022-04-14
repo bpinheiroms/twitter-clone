@@ -1,6 +1,6 @@
 import { atom } from 'recoil';
 import { feedListMock } from '../../data';
-import { IPostItem } from '../../interfaces';
+import { IFeedFilter, IPostItem } from '../../interfaces';
 import { persistAtom } from '../shared';
 
 export const feedListState = atom<IPostItem[]>({
@@ -9,7 +9,10 @@ export const feedListState = atom<IPostItem[]>({
   effects_UNSTABLE: [persistAtom],
 });
 
-export const feedListFilterState = atom<boolean>({
+export const feedListFilterState = atom<IFeedFilter>({
   key: 'feedListFilterState',
-  default: false,
+  default: {
+    isFollowing: false,
+    searchText: '',
+  },
 });

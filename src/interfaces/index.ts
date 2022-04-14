@@ -27,3 +27,8 @@ export interface IQuoteModalParams {
   opened: boolean;
   post?: IPostItem;
 }
+
+export interface IFeedFilter {
+  isAll: boolean;
+  searchText: string;
+}

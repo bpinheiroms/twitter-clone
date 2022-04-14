@@ -3,6 +3,7 @@ import { Switch } from '@headlessui/react';
 import { useRecoilState } from 'recoil';
 import { feedListFilterState } from '../../../store/feed/atoms';
 import { useRouter } from 'next/router';
+import { IFeedFilter } from '../../../interfaces';
 
 const SwitchFilter = () => {
   const router = useRouter();
@@ -10,16 +11,20 @@ const SwitchFilter = () => {
   const [filter, setFilter] = useRecoilState(feedListFilterState);
 
   const onChange = () => {
-    const param = filter ? 'all' : 'following';
+    const param = filter.isFollowing ? 'all' : 'following';
+
     router.push(`/?filter=${param}`, undefined, { shallow: true });
   };
 
   useEffect(() => {
     if (!!router?.query?.filter) {
-      const filter = router?.query?.filter.toString().toLowerCase();
+      const filterQuery = router?.query?.filter.toString().toLowerCase();
 
-      if (filter === 'all' || filter === 'following') {
-        setFilter(filter === 'following');
+      if (filterQuery === 'all' || filterQuery === 'following') {
+        setFilter((flt: IFeedFilter) => ({
+          ...flt,
+          isFollowing: filterQuery === 'following',
+        }));
       }
     }
   }, [router?.query]);
@@ -28,14 +33,14 @@ const SwitchFilter = () => {
     <div className="flex  text-slate-400 pt-5">
       <p>All</p>
       <Switch
-        checked={filter}
+        checked={filter.isFollowing}
         onChange={onChange}
-        className={`${filter ? 'bg-blue-400' : 'bg-slate-400'}
+        className={`${filter.isFollowing ? 'bg-blue-400' : 'bg-slate-400'}
          ml-2 mr-2 relative inline-flex flex-shrink-0 h-[23px] w-[40px] border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:outline-none focus-visible:ring-2  focus-visible:ring-white focus-visible:ring-opacity-75`}>
         <span className="sr-only">Use setting</span>
         <span
           aria-hidden="true"
-          className={`${filter ? 'translate-x-4' : 'translate-x-0'}
+          className={`${filter.isFollowing ? 'translate-x-4' : 'translate-x-0'}
             pointer-events-none inline-block h-[20px] w-[20px] rounded-full bg-white shadow-lg transform ring-0 transition ease-in-out duration-200`}
         />
       </Switch>

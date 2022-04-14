@@ -14,17 +14,29 @@ export const filteredFeedListState = selector({
     const list = get(feedListState);
     const followingList = get(followingListState);
 
-    const sorted = _.sortBy(list, function (o: IPostItem) {
+    let sorted = _.sortBy(list, function (o: IPostItem) {
       return new Date(o.date);
     }).reverse();
 
-    if (filter) {
-      return sorted.filter((item: IPostItem) =>
+    if (filter.isFollowing) {
+      sorted = sorted.filter((item: IPostItem) =>
         _.includes(followingList, item.idUser),
+      );
+    } else {
+      sorted = sorted.filter((item: IPostItem) => item);
+    }
+
+    if (filter.searchText !== '') {
+      const expression = RegExp(
+        `.*${filter.searchText.toLowerCase().split('').join('.*')}.*`,
+      );
+
+      sorted = sorted.filter((lst: IPostItem) =>
+        lst.text.toLowerCase().match(expression),
       );
     }
 
-    return sorted.filter((item: IPostItem) => item);
+    return sorted;
   },
 });
 
