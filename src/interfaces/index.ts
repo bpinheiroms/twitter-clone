@@ -3,6 +3,7 @@ export interface IPostItem {
   nameUser: string;
   username: string;
   idUser: number;
+  idUserRePost?: number;
   text: string;
   date: string;
   type: 'retweet' | 'tweet' | 'quote-post';

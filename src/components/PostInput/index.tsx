@@ -11,7 +11,7 @@ const PostInput = () => {
   const [charactersAvailable, setCharactersAvailable] =
     useState(totalCharacters);
 
-  const setTodoList = useSetRecoilState(feedListState);
+  const setFeedList = useSetRecoilState(feedListState);
   const exceedLimitPosts = useRecoilValue(exceedLimitPostsState);
 
   const onChangeValue = (e: ChangeEvent<HTMLTextAreaElement>) => {
@@ -24,7 +24,7 @@ const PostInput = () => {
   const onSubmit = () => {
     setPostMessage('');
 
-    setTodoList((oldList: IPostItem[]) => [
+    setFeedList((oldList: IPostItem[]) => [
       ...oldList,
       generateTweetData(postMessage),
     ]);

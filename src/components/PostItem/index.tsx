@@ -18,7 +18,7 @@ const PostItem: React.FC<IProps> = ({ post }) => {
           <PostData post={post.quotePostData} isQuotePostData />
         </PostData>
 
-        {!isRetweeted && <FooterPostItem />}
+        {!isRetweeted && <FooterPostItem post={post} />}
       </div>
     </div>
   );

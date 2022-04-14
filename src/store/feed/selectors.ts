@@ -35,7 +35,11 @@ export const exceedLimitPostsState = selector({
     const yesterday = moment().add(-1, 'day').endOf('day');
 
     const todayList = _.filter(list, function (o: IPostItem) {
-      return moment(o.date) > yesterday && o.idUser === userDataMock.idUser;
+      return (
+        moment(o.date) > yesterday &&
+        (o.idUser === userDataMock.idUser ||
+          o.idUserRePost === userDataMock.idUser)
+      );
     });
 
     return todayList.length === 5;

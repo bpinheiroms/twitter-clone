@@ -16,4 +16,16 @@ const generateTweetData = (text: string): IPostItem => {
   return data;
 };
 
-export { generateTweetData };
+const generateRetweetData = (postItem: IPostItem): IPostItem => {
+  const data: IPostItem = {
+    ...postItem,
+    id: new Date().getTime(),
+    date: convertDateTimezone(new Date()),
+    idUserRePost: userDataMock.idUser,
+    type: 'retweet',
+  };
+
+  return data;
+};
+
+export { generateTweetData, generateRetweetData };
