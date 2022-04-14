@@ -1,15 +1,27 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import useGetFeedList from '../../hooks/useGetFeedList';
 import { IPostItem } from '../../interfaces';
 import Post from '../PostItem';
+import SpinnerAnimated from '../SpinnerAnimated';
 
 const ListPosts = () => {
-  const [posts, setPosts] = useState<IPostItem[]>([]);
+  const { loading, data, fetchData } = useGetFeedList();
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   return (
     <>
-      {posts.map((post: IPostItem) => (
-        <Post key={post.id} post={post} />
-      ))}
+      {loading ? (
+        <SpinnerAnimated />
+      ) : (
+        <>
+          {data?.map((post: IPostItem) => (
+            <Post key={post.id} post={post} />
+          ))}
+        </>
+      )}
     </>
   );
 };

@@ -1,12 +1,18 @@
-import { number } from "yup";
-
 export interface IPostItem {
-  id: string;
+  id: number;
   nameUser: string;
   username: string;
   idUser: number;
   text: string;
-  date: Date;
+  date: string;
   type: 'retweet' | 'tweet' | 'quote-post';
   quotePostData?: IPostItem;
+}
+
+export interface ICreateTweet {
+  text: string;
+}
+
+export enum StorageKeys {
+  FEED_LIST = 'feed-list'
 }

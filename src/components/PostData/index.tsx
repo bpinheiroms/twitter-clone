@@ -28,7 +28,7 @@ const PostData: React.FC<IProps> = ({ post, children, isQuotePostData }) => {
               </div>
               {' · '}
               <span className={`hover:underline ${fontSize}`}>
-                <Moment fromNow>{convertDateTimezone(post.date)}</Moment>
+                <Moment fromNow>{post.date}</Moment>
               </span>
             </div>
           </div>
