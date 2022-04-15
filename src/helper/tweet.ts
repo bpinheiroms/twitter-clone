@@ -46,4 +46,16 @@ const generateQuotePostData = (
   return data;
 };
 
-export { generateTweetData, generateRetweetData, generateQuotePostData };
+const getUserCondition = (post: IPostItem, user: any) => {
+  return (
+    (post.idUser === user.idUser && !post.idUserRePost) ||
+    post.idUserRePost === user.idUser
+  );
+};
+
+export {
+  getUserCondition,
+  generateTweetData,
+  generateRetweetData,
+  generateQuotePostData,
+};

@@ -5,8 +5,9 @@ import RetweetFlag from '../RetweetFlag';
 
 interface IProps {
   post: IPostItem;
+  disabledFooter?: boolean;
 }
-const PostItem: React.FC<IProps> = ({ post }) => {
+const PostItem: React.FC<IProps> = ({ post, disabledFooter }) => {
   const isRetweeted = post.type === 'retweet';
 
   return (
@@ -18,7 +19,7 @@ const PostItem: React.FC<IProps> = ({ post }) => {
           <PostData post={post.quotePostData} isQuotePostData />
         </PostData>
 
-        {!isRetweeted && <FooterPostItem post={post} />}
+        {!isRetweeted && !disabledFooter && <FooterPostItem post={post} />}
       </div>
     </div>
   );

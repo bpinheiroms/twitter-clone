@@ -1,8 +1,11 @@
 import moment from 'moment';
 import { selector } from 'recoil';
 import { userDataMock } from '../../data';
-import { IPostItem } from '../../interfaces';
-import { followingListState } from '../profile/atoms';
+import { sortFeedByDate } from '../../helper/date';
+import { getUserCondition } from '../../helper/tweet';
+import { IDataByUser, IPostItem, IUsers } from '../../interfaces';
+import { profileModalState } from '../modals/atoms';
+import { followingListState, userListState } from '../profile/atoms';
 import { feedListFilterState, feedListState } from './atoms';
 
 const _ = require('lodash');
@@ -14,9 +17,7 @@ export const filteredFeedListState = selector({
     const list = get(feedListState);
     const followingList = get(followingListState);
 
-    let sorted = _.sortBy(list, function (o: IPostItem) {
-      return new Date(o.date);
-    }).reverse();
+    let sorted = sortFeedByDate(list);
 
     if (filter.isFollowing) {
       sorted = sorted.filter((item: IPostItem) =>
@@ -41,22 +42,6 @@ export const filteredFeedListState = selector({
   },
 });
 
-export const filteredMyPostListsState = selector({
-  key: 'filteredMyPostListsState',
-  get: ({ get }) => {
-    const list = get(feedListState);
-
-    const allPosts: IPostItem[] = _.filter(list, function (o: IPostItem) {
-      return (
-        o.idUser === userDataMock.idUser ||
-        o.idUserRePost === userDataMock.idUser
-      );
-    });
-
-    return allPosts;
-  },
-});
-
 export const exceedLimitPostsState = selector({
   key: 'exceedLimitPostsState',
   get: ({ get }) => {
@@ -65,13 +50,56 @@ export const exceedLimitPostsState = selector({
     const yesterday = moment().add(-1, 'day').endOf('day');
 
     const todayList = _.filter(list, function (o: IPostItem) {
-      return (
-        moment(o.date) > yesterday &&
-        (o.idUser === userDataMock.idUser ||
-          o.idUserRePost === userDataMock.idUser)
-      );
+      return moment(o.date) > yesterday && getUserCondition(o, userDataMock);
     });
 
     return todayList.length === 5;
+  },
+});
+
+export const dataByUserNameState = selector<IDataByUser>({
+  key: 'dataByUserNameState',
+  get: ({ get }) => {
+    const profileModal = get(profileModalState);
+
+    if (profileModal.opened) {
+      const listFeed = get(feedListState);
+      const listUsers = get(userListState);
+      const listFollowing = get(followingListState);
+
+      const user = _.findLast(
+        listUsers,
+        (user: IUsers) => user.username === profileModal.username,
+      );
+
+      if (user) {
+        const posts: IPostItem[] = _.filter(
+          listFeed,
+          function (post: IPostItem) {
+            return getUserCondition(post, user);
+          },
+        );
+
+        const followedByMe = !!listFollowing.includes(user.idUser);
+        const isMe = user.idUser === userDataMock.idUser;
+        return {
+          user: {
+            ...user,
+            followers: followedByMe ? user.followers + 1 : user.followers,
+            following: isMe ? listFollowing.length : user.following,
+          },
+          posts: sortFeedByDate(posts),
+          followedByMe,
+          isMe,
+        };
+      }
+    }
+
+    return {
+      user: undefined,
+      posts: undefined,
+      followedByMe: false,
+      isMe: false,
+    };
   },
 });

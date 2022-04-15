@@ -1,11 +1,19 @@
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { IPostItem } from '../../interfaces';
+import { dataByUserNameState } from '../../store/feed/selectors';
 import { profileModalState } from '../../store/modals/atoms';
 import Modal from '../Modal';
+import PostInput from '../PostInput';
+import PostItem from '../PostItem';
+import ProfileData from '../ProfileData';
 
 const ProfileModal = () => {
   const [profileModal, setProfileModal] = useRecoilState(profileModalState);
+
+  const { user, posts, followedByMe, isMe } =
+    useRecoilValue(dataByUserNameState);
 
   const router = useRouter();
 
@@ -34,9 +42,25 @@ const ProfileModal = () => {
       query: newQuery,
     });
   };
+
+  if (!user) {
+    return <></>;
+  }
+
   return (
     <Modal opened={profileModal.opened} onClose={onClose}>
-      <p>profile here</p>
+      <ProfileData
+        user={user}
+        postsCount={posts?.length ?? 0}
+        isMe={isMe}
+        followedByMe={followedByMe}
+      />
+
+      {isMe && <PostInput />}
+
+      {posts?.map((post: IPostItem) => (
+        <PostItem key={post.id} post={post} disabledFooter />
+      ))}
     </Modal>
   );
 };

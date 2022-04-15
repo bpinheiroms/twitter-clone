@@ -1,15 +1,15 @@
 import { useRecoilValue } from 'recoil';
 import { IPostItem } from '../../interfaces';
 import { filteredFeedListState } from '../../store/feed/selectors';
-import Post from '../PostItem';
+import PostItem from '../PostItem';
 
 const ListPosts = () => {
-  const todoList = useRecoilValue(filteredFeedListState);
+  const feedList = useRecoilValue(filteredFeedListState);
 
   return (
     <div>
-      {todoList?.map((post: IPostItem) => (
-        <Post key={post.id} post={post} />
+      {feedList?.map((post: IPostItem) => (
+        <PostItem key={post.id} post={post} />
       ))}
     </div>
   );

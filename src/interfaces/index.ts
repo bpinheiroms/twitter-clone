@@ -37,3 +37,10 @@ export interface IFeedFilter {
   isFollowing: boolean;
   searchText: string;
 }
+
+export interface IDataByUser {
+  user?: IUsers;
+  posts?: IPostItem[];
+  followedByMe: boolean;
+  isMe: boolean;
+}
