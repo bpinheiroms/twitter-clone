@@ -13,7 +13,12 @@ const SwitchFilter = () => {
   const onChange = () => {
     const param = filter.isFollowing ? 'all' : 'following';
 
-    router.push(`/?filter=${param}`, undefined, { shallow: true });
+    const newQuery = { ...router?.query, filter: param };
+
+    router.push({
+      pathname: '/',
+      query: newQuery,
+    });
   };
 
   useEffect(() => {

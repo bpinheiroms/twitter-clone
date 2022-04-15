@@ -28,6 +28,11 @@ export interface IQuoteModalParams {
   post?: IPostItem;
 }
 
+export interface IProfileModalParams {
+  opened: boolean;
+  username?: string;
+}
+
 export interface IFeedFilter {
   isFollowing: boolean;
   searchText: string;

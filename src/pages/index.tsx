@@ -1,6 +1,7 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import Feed from '../components/Feed';
+import ProfileModal from '../components/ProfileModal';
 import QuoteModal from '../components/QuoteModal';
 import Sidebar from '../components/Sidebar';
 
@@ -16,6 +17,7 @@ const Home: NextPage = () => {
         <Sidebar />
         <Feed />
         <QuoteModal />
+        <ProfileModal />
       </main>
     </div>
   );

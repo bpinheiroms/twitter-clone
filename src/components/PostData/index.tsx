@@ -1,6 +1,6 @@
-import { convertDateTimezone } from '../../helper/date';
 import Moment from 'react-moment';
 import { IPostItem } from '../../interfaces';
+import { useRouter } from 'next/router';
 
 interface IProps {
   post?: IPostItem;
@@ -13,19 +13,30 @@ const PostData: React.FC<IProps> = ({ post, children, isQuotePostData }) => {
     ? 'text-sm sm:text-[15px]'
     : 'text-[11px] sm:text-[11x]';
 
+  const router = useRouter();
+
+  const onProfileClick = () => {
+    const newQuery = { ...router?.query, profile: post?.username };
+
+    router.push({
+      pathname: '/',
+      query: newQuery,
+    });
+  };
+
   return (
     <div>
       {post && (
         <div>
           <div className="flex justify-between">
             <div className="text-slate-400">
-              <div className="inline-block group">
+              <button className="inline-block group" onClick={onProfileClick}>
                 <h4
                   className={`font-bold ${fontSize}  text-slate-200 group-hover:underline inline-block`}>
                   {post.nameUser}
                 </h4>
                 <span className={`${fontSize} ml-1.5`}>@{post.username}</span>
-              </div>
+              </button>
               {' · '}
               <span className={`hover:underline ${fontSize}`}>
                 <Moment fromNow>{post.date}</Moment>
